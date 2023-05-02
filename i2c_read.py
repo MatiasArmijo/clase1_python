@@ -1,17 +1,8 @@
-from smbus2 import SMBus
-import time
+import smbus
 
-try:
-    while True:
-        with SMBus(1) as bus:
-            comando = input("Ingresar comando (on/off): ")
-            comando = comando + "\n"
-            comando = comando.encode()
-            bus.write_i2c_block_data(31, 0, comando)
-        time.sleep(0.1)
+bus = smbus.SMBus(1) # Establecer conexión I2C en el bus 1
+address = 0x04 # Dirección del Arduino
 
-except KeyboardInterrupt:
-    print("\nInterrupcion por teclado")
-except ValueError as ve:
-    print(ve)
-    print("Otra interrupcion")
+while True:
+    data = bus.read_byte(address) # Leer un byte de datos del Arduino
+    print("Dato recibido: ", data)
