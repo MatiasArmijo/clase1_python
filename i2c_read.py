@@ -1,8 +1,20 @@
 import smbus
+import time
 
-bus = smbus.SMBus(1) # Establecer conexión I2C en el bus 1
-address = 0x04 # Dirección del Arduino
+device_address = 0x04
+
+bus = smbus.SMBus(1)
+
+def read_data():
+  data = bus.read_byte(device_address)
+  print("Dato recibido:", data)
+
+def send_data(data):
+  bus.write_byte(device_address, data)
+  print("Dato enviado:", data)
 
 while True:
-    data = bus.read_byte(address) # Leer un byte de datos del Arduino
-    print("Dato recibido: ", data)
+  send_data(42) # Enviar un valor de 42 por el bus I2C
+  time.sleep(1)
+  read_data() # Leer el valor recibido por el bus I2C
+  time.sleep(1)
